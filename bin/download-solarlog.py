@@ -18,6 +18,8 @@ from json import dumps
 headers = { "Authorization": f"Bearer {TOKEN}"}
 url = f"{BASE_URL}/visualization/plant/{PLANT_ID}/channels"
 
+all_days = []
+
 for year in [2024, 2025]:
     for month in ["01","02","03","04","05","06","07","08","09","10","11","12"]:
         # 1. Setup request
@@ -41,9 +43,26 @@ for year in [2024, 2025]:
         for day in days:
             if f"{year}-{month}" in next(iter(day["dataPoints"].keys())):
                 filtered_days.append(day)
+                all_days.append(day)
         
         print(f"Days count: {len(filtered_days)}")
         
         # 5. Write to file.
         with open(f"./{OUT_DIR}/{year}-{month}.json", "w") as out:
             out.write(dumps(filtered_days, indent=2))
+
+
+# 6. Convert to csv...
+csv_data = []
+for day in all_days:
+    for item in day["dataPoints"].items():
+        csv_data.append(item)
+
+csv_data = sorted(csv_data, reverse=True)
+csv_data = [["Timestamp", "Production[W]"]] + csv_data
+
+import csv
+
+with open(f"./{OUT_DIR}/all.csv", "w") as out:
+    writer = csv.writer(out, delimiter=";")
+    writer.writerows(csv_data)
