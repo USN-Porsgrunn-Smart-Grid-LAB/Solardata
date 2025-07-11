@@ -2,15 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Downloads</title>
+    <title>USN Porsgrunn Solardata</title>
     <style>
-      html,
       body {
-        height: 100%;
         margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        height: 100vh;
+        display: grid;
+        grid-template-areas:
+          ". .  ."
+          ". main   ."
+          ". .  ."
+          "footer footer footer";
+        grid-template-columns: 1fr auto 1fr auto;
+        grid-template-rows: 1fr auto 1fr auto;
+      }
+      header {
+        grid-area: header;
+      }
+      main {
+        grid-area: main;
+      }
+      footer {
+        grid-area: footer;
+        background-color: rgb(224, 224, 224);
       }
       a.button {
         display: flex;
@@ -30,11 +44,31 @@
     </style>
   </head>
   <body>
-    <a
-      href="./data/solarlog/solarlog-full-history-2025-07-11T12:55.csv"
-      download
-      class="button"
-      >solarlog-full-history-2025-07-11T12:55.csv</a
-    >
+    <header></header>
+    <main>
+      <a
+        href="./data/solarlog/solarlog-full-history-2025-07-11T12:55.csv"
+        download
+        class="button"
+        >solarlog-full-history-2025-07-11T12:55.csv</a
+      >
+    </main>
+    <footer>
+      <ul>
+        <li>Owner: USN Porsgrunn</li>
+        <li>
+          License:
+          <a href="https://data.norge.no/nlod/no/2.0"
+            >https://data.norge.no/nlod/no/2.0</a
+          >
+        </li>
+        <li>
+          Support:
+          <a href="https://github.com/Arxcis/USN-Porsgrunn-Solardata/issues"
+            >Github</a
+          >
+        </li>
+      </ul>
+    </footer>
   </body>
 </html>
