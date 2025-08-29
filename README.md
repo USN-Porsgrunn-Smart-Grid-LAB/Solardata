@@ -1,6 +1,6 @@
 # USN-Porsgrunn-Solardata
 
-![](images/NJ_Johannesen_Researchactivities_Onepager_English.pdf)
+![](images/research_activities.png)
 
 A static database containing historical data for the solar power installation at USN Porsgrunn.
 
