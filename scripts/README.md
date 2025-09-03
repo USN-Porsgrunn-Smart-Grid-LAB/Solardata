@@ -1,6 +1,10 @@
 ## API usage examples
 
-The Solarlog API is documented here: https://solarlog.atlassian.net/wiki/spaces/SW/pages/8170963162/02+API. Although the API is comprehensive, I found it useful to provide som extra examples here on how to consume the API using CURL.
+The Solarlog API is documented here: https://solarlog.atlassian.net/wiki/spaces/SW/pages/8170963162/02+API. 
+
+Some extra examples are provided here, showing how to consume the Solarlog API using cURL. Hopefully this will make it easier to get started. Happy cURL-ing! 🙃
+
+### Setup
 
 Before running any of the commands below, make sure you load the `SOLARLOG_TOKEN` and `SOLARLOG_PLANT` into your environment (se `.env.example`).
 
