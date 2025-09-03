@@ -21,3 +21,4 @@ In the meantime here are the other research activities in our lab:
 - Historic data: https://usn-porsgrunn-smart-grid-lab.github.io/Solardata/
 - Live data: https://solcellespesialisten.enerest.world/analysis
 - API docs: https://solarlog.atlassian.net/wiki/spaces/SW/pages/8170963162/02+API
+- API usage examples: [scripts/README.md](scripts/README.md)

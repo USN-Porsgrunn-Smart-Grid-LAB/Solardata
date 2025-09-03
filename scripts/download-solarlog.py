@@ -74,7 +74,7 @@ def main():
 
     csv_rows = sorted(csv_rows, reverse=True)
     timestamp,_ = csv_rows[0]
-    datestamp = timestamp.split(":00+")[0]
+    datestamp = (timestamp.split(":00+")[0]).replace(":", "_")
     csv_rows = [["Timestamp", "Production[W]"]] + csv_rows
 
     import csv
