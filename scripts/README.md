@@ -21,7 +21,7 @@ Make a virtual environment and install pip packages before executing the python 
 virtualenv .venv
 source .venv/bin/activate
 pip install -r scripts/requirements.txt
-source .env
+source .env # You have to make .env yourself. It should not be committed to Github, as it contains secrets. See .env.example for how .env should look like.
 python scripts/download-solarlog.py
 ```
 
