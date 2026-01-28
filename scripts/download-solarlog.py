@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from os import getenv, path
+from sys import exit
+import json
+import csv
+
+from dotenv import load_dotenv
+import requests as req
 
 def main():
-    from dotenv import load_dotenv
-    from os import getenv, path
-    from sys import exit
-
     load_dotenv()
 
     # 0. Read from environment
@@ -14,15 +17,12 @@ def main():
     OUT_DIR = "./data/solarlog/"
     CACHE_DIR = "./.cache/"
 
-    import requests as req
-    import json
-
     headers = { "Authorization": f"Bearer {TOKEN}"}
     url = f"{BASE_URL}/visualization/plant/{PLANT_ID}/channels"
 
     all_days = []
 
-    for year in [2024, 2025]:
+    for year in [2024, 2025, 2026]:
         for month in ["01","02","03","04","05","06","07","08","09","10","11","12"]:
             cache_file = f"./{CACHE_DIR}/{year}-{month}.json"
 
@@ -65,7 +65,7 @@ def main():
                 out.write(json_dump)
 
 
-    # 6. Convert to csv...
+    # 6. Convert .json to .csv...
     csv_rows = []
     for day in all_days:
         for datapoint in day["dataPoints"].items():
@@ -76,8 +76,6 @@ def main():
     timestamp,_ = csv_rows[0]
     datestamp = (timestamp.split(":00+")[0]).replace(":", "_")
     csv_rows = [["Timestamp", "Production[W]"]] + csv_rows
-
-    import csv
 
     with open(f"./{OUT_DIR}/solarlog-full-history-{datestamp}.csv", "w") as out:
         writer = csv.writer(out, delimiter=";")

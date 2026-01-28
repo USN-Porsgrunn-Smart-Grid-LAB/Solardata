@@ -1,12 +1,34 @@
 ## API usage examples
 
-The Solarlog API is documented here: https://solarlog.atlassian.net/wiki/spaces/SW/pages/8170963162/02+API. 
+The Solarlog API is documented here: https://solarlog.atlassian.net/wiki/spaces/SW/pages/8170963162/02+API.
 
-Some extra examples are provided here, showing how to consume the Solarlog API using cURL. Hopefully this will make it easier to get started. Happy cURL-ing! 🙃
+Some extra examples are provided below, showing how to consume the Solarlog API using cURL. Hopefully this will make it easier to get started. Happy cURL-ing! 🙃
 
-### Setup
 
-Before running any of the commands below, make sure you load the `SOLARLOG_TOKEN` and `SOLARLOG_PLANT` into your environment (se `.env.example`).
+### Python and sh examples
+
+Checkout the two examples of how to interact with the API from Python-script and shell-script respectively:
+```
+scripts/
+  download-solarlog.py
+  download-solarlog.sh
+```
+
+### Setup and run the Python-example
+
+Make a virtual environment and install pip packages before executing the python scripts.
+```sh
+virtualenv .venv
+source .venv/bin/activate
+pip install -r scripts/requirements.txt
+source .env
+python scripts/download-solarlog.py
+```
+
+### Setup cURL
+
+Before running any of the commands below, make sure you load the `SOLARLOG_TOKEN` and `SOLARLOG_PLANT` into your environment (see`.env.example`).
+
 
 ### Get Insolation, Irradiation, TempModule - /api/visualization/plant/\<plantid\>/cross-epoch/channels
 
