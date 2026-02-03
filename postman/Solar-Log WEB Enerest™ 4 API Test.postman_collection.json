@@ -1,0 +1,1320 @@
+{
+	"info": {
+		"_postman_id": "5a526897-9e41-4608-a204-6ce49cd7f0f3",
+		"name": "Solar-Log WEB Enerest™ 4 API Test",
+		"description": "In dev environment portal ends with \"...sds.world\"",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20097967",
+		"_collection_link": "https://warped-meteor-834113.postman.co/workspace/Solcellespesialisten_Geir_API~9073ad47-1412-48ee-a72f-ed1d4237302d/collection/20097967-5a526897-9e41-4608-a204-6ce49cd7f0f3?action=share&source=collection_link&creator=20097967"
+	},
+	"item": [
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "Portal L",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{clientID}}",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "{{clientSecret}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{tokenURL}}/auth/realms/quotaapi/protocol/openid-connect/token",
+							"host": [
+								"{{tokenURL}}"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"quotaapi",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Request access token\",() =>{",
+							"    var jsonData = pm.response.json();",
+							"    pm.environment.set(\"bearerToken\",jsonData.access_token);",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Administration",
+			"item": [
+				{
+					"name": "Plant",
+					"item": [
+						{
+							"name": "Plant",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/administration/plant/{{plant}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"administration",
+										"plant",
+										"{{plant}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Plant: Location",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/administration/plants/{{plant}}/address",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"administration",
+										"plants",
+										"{{plant}}",
+										"address"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Plant: Contacts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/administration/plants/{{plant}}/contacts",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"administration",
+										"plants",
+										"{{plant}}",
+										"contacts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Plants",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/administration/plants",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"administration",
+										"plants"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Fleet",
+					"item": [
+						{
+							"name": "Fleet",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/administration/fleet/{{fleet}}",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"administration",
+										"fleet",
+										"{{fleet}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Fleet: All Assigned plants",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/administration/fleet/{{fleet}}/plants",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"administration",
+										"fleet",
+										"{{fleet}}",
+										"plants"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Datasource",
+			"item": [
+				{
+					"name": "Inverters for a plant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/datasource/plant/{{plant}}/inverters",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"datasource",
+								"plant",
+								"{{plant}}",
+								"inverters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Components for a plant for a day",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/datasource/plant/{{plant}}/components/{{date}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"datasource",
+								"plant",
+								"{{plant}}",
+								"components",
+								"{{date}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Components for a plant for a day Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/datasource/plant/{{plant}}/components/2022-01-09",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"datasource",
+								"plant",
+								"{{plant}}",
+								"components",
+								"2022-01-09"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Epoch Range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/datasource/plant/{{plant}}/epochrange?date=202-08-24",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"datasource",
+								"plant",
+								"{{plant}}",
+								"epochrange"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "202-08-24"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visualization",
+			"item": [
+				{
+					"name": "Plant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Financial Values",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdEtotalFinancialYield&channelNames[]=ProdEtotalFeedFinancialYield&channelNames[]=ConsEtotalCovFinancialYield&dateFrom=2022-02-09&dateTo=2022-02-09",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotalFinancialYield"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotalFeedFinancialYield"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ConsEtotalCovFinancialYield"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2022-02-09"
+								},
+								{
+									"key": "dateTo",
+									"value": "2022-02-09"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Norm. Prod PAC & Norm. Prod PDC",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdPacNorm&channelNames[]=ProdPdcNorm&dateFrom=2021-06-10&dateTo=2021-06-11",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdPacNorm"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ProdPdcNorm"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2021-06-10"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-06-11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UDC & IDC & Inverter Temp",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdPacNorm&channelNames[]=ProdPdcNorm&channelNames[]=Temp&dateFrom=2021-06-10&dateTo=2021-06-11&componentIds[]={{component}}&mppTrackerIds[]={{mppTracker}}&channelNames[]=ProdUac&channelNames[]=ProdUdc&channelNames[]=ProdEtotal",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdPacNorm"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ProdPdcNorm"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "Temp"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2021-06-10"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-06-11"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "{{component}}"
+								},
+								{
+									"key": "mppTrackerIds[]",
+									"value": "{{mppTracker}}"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ProdUac"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ProdUdc"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sensor Values",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?dateFrom=2021-06-16&dateTo=2021-06-16&channelNames[]=Irradiation&channelNames[]=TempModule&componentIds[]={{sensor}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "2021-06-16"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-06-16"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "Irradiation"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "TempModule"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "{{sensor}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Weighted Technival Availability",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=TechAv&dateFrom=2021-06-13&dateTo=2021-06-13",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "TechAv"
+								},
+								{
+									"key": "dateFrom",
+									"value": "2021-06-13"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-06-13"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Technival Availability",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?dateFrom=2021-06-10&dateTo=2021-06-10&channelNames[]=TechAv&componentIds[]={{component}}&componentIds[]=adf04423-2e34-11eb-b15b-96000027080d&componentIds[]=adf0eeb8-2e34-11eb-b15b-96000027080d&componentIds[]=adf18a7c-2e34-11eb-b15b-96000027080d&componentIds[]=adf212e1-2e34-11eb-b15b-96000027080d&componentIds[]=adf2a53e-2e34-11eb-b15b-96000027080d&componentIds[]=adf355cc-2e34-11eb-b15b-96000027080d&componentIds[]=adf3e67a-2e34-11eb-b15b-96000027080d&componentIds[]=adf49d47-2e34-11eb-b15b-96000027080d&componentIds[]=adf55cc7-2e34-11eb-b15b-96000027080d&componentIds[]=adf609e7-2e34-11eb-b15b-96000027080d&componentIds[]=adf6cf32-2e34-11eb-b15b-96000027080d&componentIds[]=adf77f23-2e34-11eb-b15b-96000027080d",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "2021-06-10"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-06-10"
+								},
+								{
+									"key": "channelNames[]",
+									"value": "TechAv"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "{{component}}"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf04423-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf0eeb8-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf18a7c-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf212e1-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf2a53e-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf355cc-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf3e67a-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf49d47-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf55cc7-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf609e7-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf6cf32-2e34-11eb-b15b-96000027080d"
+								},
+								{
+									"key": "componentIds[]",
+									"value": "adf77f23-2e34-11eb-b15b-96000027080d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Production today Pac W",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdPac&dateFrom=today&dateTo=today",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdPac"
+								},
+								{
+									"key": "dateFrom",
+									"value": "today"
+								},
+								{
+									"key": "dateTo",
+									"value": "today"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Production today and yesterday Pac W",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdPac&dateFrom=today&dateTo=today",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdPac"
+								},
+								{
+									"key": "dateFrom",
+									"value": "today"
+								},
+								{
+									"key": "dateTo",
+									"value": "today"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produced Energy today Wh",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdEtotal&dateFrom=today&dateTo=today",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotal"
+								},
+								{
+									"key": "dateFrom",
+									"value": "today"
+								},
+								{
+									"key": "dateTo",
+									"value": "today"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Produced Energy today Wh",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdEtotal&dateFrom=today&dateTo=today",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"visualization",
+										"plant",
+										"{{plant}}",
+										"channels"
+									],
+									"query": [
+										{
+											"key": "channelNames[]",
+											"value": "ProdEtotal"
+										},
+										{
+											"key": "dateFrom",
+											"value": "today"
+										},
+										{
+											"key": "dateTo",
+											"value": "today"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "1156"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 09:01:29 GMT"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Vary",
+									"value": "origin,access-control-request-method,access-control-request-headers,accept-encoding"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "Request-Context",
+									"value": "appId=cid-v1:bb556190-f475-4c7f-b814-212cd7083773"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"6825156c06d8e23e119edbcd\",\n        \"deviceId\": \"89b711c2-f9b4-11ef-becb-0ddc5cd73f17\",\n        \"deviceType\": \"Datasource\",\n        \"name\": \"ProdEtotal\",\n        \"dataPoints\": {\n            \"2025-05-15T00:00:00+02:00\": 0,\n            \"2025-05-15T00:05:00+02:00\": 0,\n            \"2025-05-15T00:10:00+02:00\": 0,\n            \"2025-05-15T00:15:00+02:00\": 0,\n            \"2025-05-15T00:20:00+02:00\": 0,\n            \"2025-05-15T00:25:00+02:00\": 0,\n            \"2025-05-15T00:30:00+02:00\": 0,\n            \"2025-05-15T00:35:00+02:00\": 0,\n            \"2025-05-15T00:40:00+02:00\": 0,\n            \"2025-05-15T00:45:00+02:00\": 0,\n            \"2025-05-15T00:50:00+02:00\": 0,\n            \"2025-05-15T00:55:00+02:00\": 0,\n            \"2025-05-15T01:00:00+02:00\": 0,\n            \"2025-05-15T01:05:00+02:00\": 0,\n            \"2025-05-15T01:10:00+02:00\": 0,\n            \"2025-05-15T01:15:00+02:00\": 0,\n            \"2025-05-15T01:20:00+02:00\": 0,\n            \"2025-05-15T01:25:00+02:00\": 0,\n            \"2025-05-15T01:30:00+02:00\": 0,\n            \"2025-05-15T01:35:00+02:00\": 0,\n            \"2025-05-15T01:40:00+02:00\": 0,\n            \"2025-05-15T01:45:00+02:00\": 0,\n            \"2025-05-15T01:50:00+02:00\": 0,\n            \"2025-05-15T01:55:00+02:00\": 0,\n            \"2025-05-15T02:00:00+02:00\": 0,\n            \"2025-05-15T02:05:00+02:00\": 0,\n            \"2025-05-15T02:10:00+02:00\": 0,\n            \"2025-05-15T02:15:00+02:00\": 0,\n            \"2025-05-15T02:20:00+02:00\": 0,\n            \"2025-05-15T02:25:00+02:00\": 0,\n            \"2025-05-15T02:30:00+02:00\": 0,\n            \"2025-05-15T02:35:00+02:00\": 0,\n            \"2025-05-15T02:40:00+02:00\": 0,\n            \"2025-05-15T02:45:00+02:00\": 0,\n            \"2025-05-15T02:50:00+02:00\": 0,\n            \"2025-05-15T02:55:00+02:00\": 0,\n            \"2025-05-15T03:00:00+02:00\": 0,\n            \"2025-05-15T03:05:00+02:00\": 0,\n            \"2025-05-15T03:10:00+02:00\": 0,\n            \"2025-05-15T03:15:00+02:00\": 0,\n            \"2025-05-15T03:20:00+02:00\": 0,\n            \"2025-05-15T03:25:00+02:00\": 0,\n            \"2025-05-15T03:30:00+02:00\": 0,\n            \"2025-05-15T03:35:00+02:00\": 0,\n            \"2025-05-15T03:40:00+02:00\": 0,\n            \"2025-05-15T03:45:00+02:00\": 0,\n            \"2025-05-15T03:50:00+02:00\": 0,\n            \"2025-05-15T03:55:00+02:00\": 0,\n            \"2025-05-15T04:00:00+02:00\": 0,\n            \"2025-05-15T04:05:00+02:00\": 0,\n            \"2025-05-15T04:10:00+02:00\": 0,\n            \"2025-05-15T04:15:00+02:00\": 0,\n            \"2025-05-15T04:20:00+02:00\": 0,\n            \"2025-05-15T04:25:00+02:00\": 0,\n            \"2025-05-15T04:30:00+02:00\": 0,\n            \"2025-05-15T04:35:00+02:00\": 0,\n            \"2025-05-15T04:40:00+02:00\": 0,\n            \"2025-05-15T04:45:00+02:00\": 0,\n            \"2025-05-15T04:50:00+02:00\": 300,\n            \"2025-05-15T04:55:00+02:00\": 700,\n            \"2025-05-15T05:00:00+02:00\": 1100,\n            \"2025-05-15T05:05:00+02:00\": 1700,\n            \"2025-05-15T05:10:00+02:00\": 2300,\n            \"2025-05-15T05:15:00+02:00\": 3100,\n            \"2025-05-15T05:20:00+02:00\": 4000,\n            \"2025-05-15T05:25:00+02:00\": 4800,\n            \"2025-05-15T05:30:00+02:00\": 6100,\n            \"2025-05-15T05:35:00+02:00\": 7300,\n            \"2025-05-15T05:40:00+02:00\": 8700,\n            \"2025-05-15T05:45:00+02:00\": 10100,\n            \"2025-05-15T05:50:00+02:00\": 12000,\n            \"2025-05-15T05:55:00+02:00\": 14400,\n            \"2025-05-15T06:00:00+02:00\": 17300,\n            \"2025-05-15T06:05:00+02:00\": 21100,\n            \"2025-05-15T06:10:00+02:00\": 25500,\n            \"2025-05-15T06:15:00+02:00\": 31000,\n            \"2025-05-15T06:20:00+02:00\": 37100,\n            \"2025-05-15T06:25:00+02:00\": 44300,\n            \"2025-05-15T06:30:00+02:00\": 52600,\n            \"2025-05-15T06:35:00+02:00\": 61400,\n            \"2025-05-15T06:40:00+02:00\": 71100,\n            \"2025-05-15T06:45:00+02:00\": 81300,\n            \"2025-05-15T06:50:00+02:00\": 92200,\n            \"2025-05-15T06:55:00+02:00\": 103600,\n            \"2025-05-15T07:00:00+02:00\": 116000,\n            \"2025-05-15T07:05:00+02:00\": 128900,\n            \"2025-05-15T07:10:00+02:00\": 142700,\n            \"2025-05-15T07:15:00+02:00\": 156900,\n            \"2025-05-15T07:20:00+02:00\": 171900,\n            \"2025-05-15T07:25:00+02:00\": 187800,\n            \"2025-05-15T07:30:00+02:00\": 204100,\n            \"2025-05-15T07:35:00+02:00\": 221500,\n            \"2025-05-15T07:40:00+02:00\": 239700,\n            \"2025-05-15T07:45:00+02:00\": 258700,\n            \"2025-05-15T07:50:00+02:00\": 278500,\n            \"2025-05-15T07:55:00+02:00\": 299300,\n            \"2025-05-15T08:00:00+02:00\": 320600,\n            \"2025-05-15T08:05:00+02:00\": 343200,\n            \"2025-05-15T08:10:00+02:00\": 366000,\n            \"2025-05-15T08:15:00+02:00\": 389800,\n            \"2025-05-15T08:20:00+02:00\": 414400,\n            \"2025-05-15T08:25:00+02:00\": 439600,\n            \"2025-05-15T08:30:00+02:00\": 465600,\n            \"2025-05-15T08:35:00+02:00\": 492500,\n            \"2025-05-15T08:40:00+02:00\": 520100,\n            \"2025-05-15T08:45:00+02:00\": 548600,\n            \"2025-05-15T08:50:00+02:00\": 577600,\n            \"2025-05-15T08:55:00+02:00\": 607500,\n            \"2025-05-15T09:00:00+02:00\": 638000,\n            \"2025-05-15T09:05:00+02:00\": 669200,\n            \"2025-05-15T09:10:00+02:00\": 701400,\n            \"2025-05-15T09:15:00+02:00\": 734200,\n            \"2025-05-15T09:20:00+02:00\": 767500,\n            \"2025-05-15T09:25:00+02:00\": 801700,\n            \"2025-05-15T09:30:00+02:00\": 836500,\n            \"2025-05-15T09:35:00+02:00\": 872100,\n            \"2025-05-15T09:40:00+02:00\": 908000,\n            \"2025-05-15T09:45:00+02:00\": 944600,\n            \"2025-05-15T09:50:00+02:00\": 981700,\n            \"2025-05-15T09:55:00+02:00\": 1019600,\n            \"2025-05-15T10:00:00+02:00\": 1057700,\n            \"2025-05-15T10:05:00+02:00\": 1096700,\n            \"2025-05-15T10:10:00+02:00\": 1136300,\n            \"2025-05-15T10:15:00+02:00\": 1176200,\n            \"2025-05-15T10:20:00+02:00\": 1216900,\n            \"2025-05-15T10:25:00+02:00\": 1258000,\n            \"2025-05-15T10:30:00+02:00\": 1299300,\n            \"2025-05-15T10:35:00+02:00\": 1341200,\n            \"2025-05-15T10:40:00+02:00\": 1383200,\n            \"2025-05-15T10:45:00+02:00\": 1425700,\n            \"2025-05-15T10:50:00+02:00\": null,\n            \"2025-05-15T10:55:00+02:00\": null,\n            \"2025-05-15T11:00:00+02:00\": null,\n            \"2025-05-15T11:05:00+02:00\": null,\n            \"2025-05-15T11:10:00+02:00\": null,\n            \"2025-05-15T11:15:00+02:00\": null,\n            \"2025-05-15T11:20:00+02:00\": null,\n            \"2025-05-15T11:25:00+02:00\": null,\n            \"2025-05-15T11:30:00+02:00\": null,\n            \"2025-05-15T11:35:00+02:00\": null,\n            \"2025-05-15T11:40:00+02:00\": null,\n            \"2025-05-15T11:45:00+02:00\": null,\n            \"2025-05-15T11:50:00+02:00\": null,\n            \"2025-05-15T11:55:00+02:00\": null,\n            \"2025-05-15T12:00:00+02:00\": null,\n            \"2025-05-15T12:05:00+02:00\": null,\n            \"2025-05-15T12:10:00+02:00\": null,\n            \"2025-05-15T12:15:00+02:00\": null,\n            \"2025-05-15T12:20:00+02:00\": null,\n            \"2025-05-15T12:25:00+02:00\": null,\n            \"2025-05-15T12:30:00+02:00\": null,\n            \"2025-05-15T12:35:00+02:00\": null,\n            \"2025-05-15T12:40:00+02:00\": null,\n            \"2025-05-15T12:45:00+02:00\": null,\n            \"2025-05-15T12:50:00+02:00\": null,\n            \"2025-05-15T12:55:00+02:00\": null,\n            \"2025-05-15T13:00:00+02:00\": null,\n            \"2025-05-15T13:05:00+02:00\": null,\n            \"2025-05-15T13:10:00+02:00\": null,\n            \"2025-05-15T13:15:00+02:00\": null,\n            \"2025-05-15T13:20:00+02:00\": null,\n            \"2025-05-15T13:25:00+02:00\": null,\n            \"2025-05-15T13:30:00+02:00\": null,\n            \"2025-05-15T13:35:00+02:00\": null,\n            \"2025-05-15T13:40:00+02:00\": null,\n            \"2025-05-15T13:45:00+02:00\": null,\n            \"2025-05-15T13:50:00+02:00\": null,\n            \"2025-05-15T13:55:00+02:00\": null,\n            \"2025-05-15T14:00:00+02:00\": null,\n            \"2025-05-15T14:05:00+02:00\": null,\n            \"2025-05-15T14:10:00+02:00\": null,\n            \"2025-05-15T14:15:00+02:00\": null,\n            \"2025-05-15T14:20:00+02:00\": null,\n            \"2025-05-15T14:25:00+02:00\": null,\n            \"2025-05-15T14:30:00+02:00\": null,\n            \"2025-05-15T14:35:00+02:00\": null,\n            \"2025-05-15T14:40:00+02:00\": null,\n            \"2025-05-15T14:45:00+02:00\": null,\n            \"2025-05-15T14:50:00+02:00\": null,\n            \"2025-05-15T14:55:00+02:00\": null,\n            \"2025-05-15T15:00:00+02:00\": null,\n            \"2025-05-15T15:05:00+02:00\": null,\n            \"2025-05-15T15:10:00+02:00\": null,\n            \"2025-05-15T15:15:00+02:00\": null,\n            \"2025-05-15T15:20:00+02:00\": null,\n            \"2025-05-15T15:25:00+02:00\": null,\n            \"2025-05-15T15:30:00+02:00\": null,\n            \"2025-05-15T15:35:00+02:00\": null,\n            \"2025-05-15T15:40:00+02:00\": null,\n            \"2025-05-15T15:45:00+02:00\": null,\n            \"2025-05-15T15:50:00+02:00\": null,\n            \"2025-05-15T15:55:00+02:00\": null,\n            \"2025-05-15T16:00:00+02:00\": null,\n            \"2025-05-15T16:05:00+02:00\": null,\n            \"2025-05-15T16:10:00+02:00\": null,\n            \"2025-05-15T16:15:00+02:00\": null,\n            \"2025-05-15T16:20:00+02:00\": null,\n            \"2025-05-15T16:25:00+02:00\": null,\n            \"2025-05-15T16:30:00+02:00\": null,\n            \"2025-05-15T16:35:00+02:00\": null,\n            \"2025-05-15T16:40:00+02:00\": null,\n            \"2025-05-15T16:45:00+02:00\": null,\n            \"2025-05-15T16:50:00+02:00\": null,\n            \"2025-05-15T16:55:00+02:00\": null,\n            \"2025-05-15T17:00:00+02:00\": null,\n            \"2025-05-15T17:05:00+02:00\": null,\n            \"2025-05-15T17:10:00+02:00\": null,\n            \"2025-05-15T17:15:00+02:00\": null,\n            \"2025-05-15T17:20:00+02:00\": null,\n            \"2025-05-15T17:25:00+02:00\": null,\n            \"2025-05-15T17:30:00+02:00\": null,\n            \"2025-05-15T17:35:00+02:00\": null,\n            \"2025-05-15T17:40:00+02:00\": null,\n            \"2025-05-15T17:45:00+02:00\": null,\n            \"2025-05-15T17:50:00+02:00\": null,\n            \"2025-05-15T17:55:00+02:00\": null,\n            \"2025-05-15T18:00:00+02:00\": null,\n            \"2025-05-15T18:05:00+02:00\": null,\n            \"2025-05-15T18:10:00+02:00\": null,\n            \"2025-05-15T18:15:00+02:00\": null,\n            \"2025-05-15T18:20:00+02:00\": null,\n            \"2025-05-15T18:25:00+02:00\": null,\n            \"2025-05-15T18:30:00+02:00\": null,\n            \"2025-05-15T18:35:00+02:00\": null,\n            \"2025-05-15T18:40:00+02:00\": null,\n            \"2025-05-15T18:45:00+02:00\": null,\n            \"2025-05-15T18:50:00+02:00\": null,\n            \"2025-05-15T18:55:00+02:00\": null,\n            \"2025-05-15T19:00:00+02:00\": null,\n            \"2025-05-15T19:05:00+02:00\": null,\n            \"2025-05-15T19:10:00+02:00\": null,\n            \"2025-05-15T19:15:00+02:00\": null,\n            \"2025-05-15T19:20:00+02:00\": null,\n            \"2025-05-15T19:25:00+02:00\": null,\n            \"2025-05-15T19:30:00+02:00\": null,\n            \"2025-05-15T19:35:00+02:00\": null,\n            \"2025-05-15T19:40:00+02:00\": null,\n            \"2025-05-15T19:45:00+02:00\": null,\n            \"2025-05-15T19:50:00+02:00\": null,\n            \"2025-05-15T19:55:00+02:00\": null,\n            \"2025-05-15T20:00:00+02:00\": null,\n            \"2025-05-15T20:05:00+02:00\": null,\n            \"2025-05-15T20:10:00+02:00\": null,\n            \"2025-05-15T20:15:00+02:00\": null,\n            \"2025-05-15T20:20:00+02:00\": null,\n            \"2025-05-15T20:25:00+02:00\": null,\n            \"2025-05-15T20:30:00+02:00\": null,\n            \"2025-05-15T20:35:00+02:00\": null,\n            \"2025-05-15T20:40:00+02:00\": null,\n            \"2025-05-15T20:45:00+02:00\": null,\n            \"2025-05-15T20:50:00+02:00\": null,\n            \"2025-05-15T20:55:00+02:00\": null,\n            \"2025-05-15T21:00:00+02:00\": null,\n            \"2025-05-15T21:05:00+02:00\": null,\n            \"2025-05-15T21:10:00+02:00\": null,\n            \"2025-05-15T21:15:00+02:00\": null,\n            \"2025-05-15T21:20:00+02:00\": null,\n            \"2025-05-15T21:25:00+02:00\": null,\n            \"2025-05-15T21:30:00+02:00\": null,\n            \"2025-05-15T21:35:00+02:00\": null,\n            \"2025-05-15T21:40:00+02:00\": null,\n            \"2025-05-15T21:45:00+02:00\": null,\n            \"2025-05-15T21:50:00+02:00\": null,\n            \"2025-05-15T21:55:00+02:00\": null,\n            \"2025-05-15T22:00:00+02:00\": null,\n            \"2025-05-15T22:05:00+02:00\": null,\n            \"2025-05-15T22:10:00+02:00\": null,\n            \"2025-05-15T22:15:00+02:00\": null,\n            \"2025-05-15T22:20:00+02:00\": null,\n            \"2025-05-15T22:25:00+02:00\": null,\n            \"2025-05-15T22:30:00+02:00\": null,\n            \"2025-05-15T22:35:00+02:00\": null,\n            \"2025-05-15T22:40:00+02:00\": null,\n            \"2025-05-15T22:45:00+02:00\": null,\n            \"2025-05-15T22:50:00+02:00\": null,\n            \"2025-05-15T22:55:00+02:00\": null,\n            \"2025-05-15T23:00:00+02:00\": null,\n            \"2025-05-15T23:05:00+02:00\": null,\n            \"2025-05-15T23:10:00+02:00\": null,\n            \"2025-05-15T23:15:00+02:00\": null,\n            \"2025-05-15T23:20:00+02:00\": null,\n            \"2025-05-15T23:25:00+02:00\": null,\n            \"2025-05-15T23:30:00+02:00\": null,\n            \"2025-05-15T23:35:00+02:00\": null,\n            \"2025-05-15T23:40:00+02:00\": null,\n            \"2025-05-15T23:45:00+02:00\": null,\n            \"2025-05-15T23:50:00+02:00\": null,\n            \"2025-05-15T23:55:00+02:00\": null\n        },\n        \"date\": \"2025-05-15\",\n        \"unit\": \"Wh\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Produced Energy yesterday",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdEtotal&dateFrom=yesterday&dateTo=yesterday",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"channels"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotal"
+								},
+								{
+									"key": "dateFrom",
+									"value": "yesterday"
+								},
+								{
+									"key": "dateTo",
+									"value": "yesterday"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Produced Energy today Wh",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdEtotal&dateFrom=today&dateTo=today",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"visualization",
+										"plant",
+										"{{plant}}",
+										"channels"
+									],
+									"query": [
+										{
+											"key": "channelNames[]",
+											"value": "ProdEtotal"
+										},
+										{
+											"key": "dateFrom",
+											"value": "today"
+										},
+										{
+											"key": "dateTo",
+											"value": "today"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "1156"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 15 May 2025 09:01:29 GMT"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Vary",
+									"value": "origin,access-control-request-method,access-control-request-headers,accept-encoding"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "Request-Context",
+									"value": "appId=cid-v1:bb556190-f475-4c7f-b814-212cd7083773"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"6825156c06d8e23e119edbcd\",\n        \"deviceId\": \"89b711c2-f9b4-11ef-becb-0ddc5cd73f17\",\n        \"deviceType\": \"Datasource\",\n        \"name\": \"ProdEtotal\",\n        \"dataPoints\": {\n            \"2025-05-15T00:00:00+02:00\": 0,\n            \"2025-05-15T00:05:00+02:00\": 0,\n            \"2025-05-15T00:10:00+02:00\": 0,\n            \"2025-05-15T00:15:00+02:00\": 0,\n            \"2025-05-15T00:20:00+02:00\": 0,\n            \"2025-05-15T00:25:00+02:00\": 0,\n            \"2025-05-15T00:30:00+02:00\": 0,\n            \"2025-05-15T00:35:00+02:00\": 0,\n            \"2025-05-15T00:40:00+02:00\": 0,\n            \"2025-05-15T00:45:00+02:00\": 0,\n            \"2025-05-15T00:50:00+02:00\": 0,\n            \"2025-05-15T00:55:00+02:00\": 0,\n            \"2025-05-15T01:00:00+02:00\": 0,\n            \"2025-05-15T01:05:00+02:00\": 0,\n            \"2025-05-15T01:10:00+02:00\": 0,\n            \"2025-05-15T01:15:00+02:00\": 0,\n            \"2025-05-15T01:20:00+02:00\": 0,\n            \"2025-05-15T01:25:00+02:00\": 0,\n            \"2025-05-15T01:30:00+02:00\": 0,\n            \"2025-05-15T01:35:00+02:00\": 0,\n            \"2025-05-15T01:40:00+02:00\": 0,\n            \"2025-05-15T01:45:00+02:00\": 0,\n            \"2025-05-15T01:50:00+02:00\": 0,\n            \"2025-05-15T01:55:00+02:00\": 0,\n            \"2025-05-15T02:00:00+02:00\": 0,\n            \"2025-05-15T02:05:00+02:00\": 0,\n            \"2025-05-15T02:10:00+02:00\": 0,\n            \"2025-05-15T02:15:00+02:00\": 0,\n            \"2025-05-15T02:20:00+02:00\": 0,\n            \"2025-05-15T02:25:00+02:00\": 0,\n            \"2025-05-15T02:30:00+02:00\": 0,\n            \"2025-05-15T02:35:00+02:00\": 0,\n            \"2025-05-15T02:40:00+02:00\": 0,\n            \"2025-05-15T02:45:00+02:00\": 0,\n            \"2025-05-15T02:50:00+02:00\": 0,\n            \"2025-05-15T02:55:00+02:00\": 0,\n            \"2025-05-15T03:00:00+02:00\": 0,\n            \"2025-05-15T03:05:00+02:00\": 0,\n            \"2025-05-15T03:10:00+02:00\": 0,\n            \"2025-05-15T03:15:00+02:00\": 0,\n            \"2025-05-15T03:20:00+02:00\": 0,\n            \"2025-05-15T03:25:00+02:00\": 0,\n            \"2025-05-15T03:30:00+02:00\": 0,\n            \"2025-05-15T03:35:00+02:00\": 0,\n            \"2025-05-15T03:40:00+02:00\": 0,\n            \"2025-05-15T03:45:00+02:00\": 0,\n            \"2025-05-15T03:50:00+02:00\": 0,\n            \"2025-05-15T03:55:00+02:00\": 0,\n            \"2025-05-15T04:00:00+02:00\": 0,\n            \"2025-05-15T04:05:00+02:00\": 0,\n            \"2025-05-15T04:10:00+02:00\": 0,\n            \"2025-05-15T04:15:00+02:00\": 0,\n            \"2025-05-15T04:20:00+02:00\": 0,\n            \"2025-05-15T04:25:00+02:00\": 0,\n            \"2025-05-15T04:30:00+02:00\": 0,\n            \"2025-05-15T04:35:00+02:00\": 0,\n            \"2025-05-15T04:40:00+02:00\": 0,\n            \"2025-05-15T04:45:00+02:00\": 0,\n            \"2025-05-15T04:50:00+02:00\": 300,\n            \"2025-05-15T04:55:00+02:00\": 700,\n            \"2025-05-15T05:00:00+02:00\": 1100,\n            \"2025-05-15T05:05:00+02:00\": 1700,\n            \"2025-05-15T05:10:00+02:00\": 2300,\n            \"2025-05-15T05:15:00+02:00\": 3100,\n            \"2025-05-15T05:20:00+02:00\": 4000,\n            \"2025-05-15T05:25:00+02:00\": 4800,\n            \"2025-05-15T05:30:00+02:00\": 6100,\n            \"2025-05-15T05:35:00+02:00\": 7300,\n            \"2025-05-15T05:40:00+02:00\": 8700,\n            \"2025-05-15T05:45:00+02:00\": 10100,\n            \"2025-05-15T05:50:00+02:00\": 12000,\n            \"2025-05-15T05:55:00+02:00\": 14400,\n            \"2025-05-15T06:00:00+02:00\": 17300,\n            \"2025-05-15T06:05:00+02:00\": 21100,\n            \"2025-05-15T06:10:00+02:00\": 25500,\n            \"2025-05-15T06:15:00+02:00\": 31000,\n            \"2025-05-15T06:20:00+02:00\": 37100,\n            \"2025-05-15T06:25:00+02:00\": 44300,\n            \"2025-05-15T06:30:00+02:00\": 52600,\n            \"2025-05-15T06:35:00+02:00\": 61400,\n            \"2025-05-15T06:40:00+02:00\": 71100,\n            \"2025-05-15T06:45:00+02:00\": 81300,\n            \"2025-05-15T06:50:00+02:00\": 92200,\n            \"2025-05-15T06:55:00+02:00\": 103600,\n            \"2025-05-15T07:00:00+02:00\": 116000,\n            \"2025-05-15T07:05:00+02:00\": 128900,\n            \"2025-05-15T07:10:00+02:00\": 142700,\n            \"2025-05-15T07:15:00+02:00\": 156900,\n            \"2025-05-15T07:20:00+02:00\": 171900,\n            \"2025-05-15T07:25:00+02:00\": 187800,\n            \"2025-05-15T07:30:00+02:00\": 204100,\n            \"2025-05-15T07:35:00+02:00\": 221500,\n            \"2025-05-15T07:40:00+02:00\": 239700,\n            \"2025-05-15T07:45:00+02:00\": 258700,\n            \"2025-05-15T07:50:00+02:00\": 278500,\n            \"2025-05-15T07:55:00+02:00\": 299300,\n            \"2025-05-15T08:00:00+02:00\": 320600,\n            \"2025-05-15T08:05:00+02:00\": 343200,\n            \"2025-05-15T08:10:00+02:00\": 366000,\n            \"2025-05-15T08:15:00+02:00\": 389800,\n            \"2025-05-15T08:20:00+02:00\": 414400,\n            \"2025-05-15T08:25:00+02:00\": 439600,\n            \"2025-05-15T08:30:00+02:00\": 465600,\n            \"2025-05-15T08:35:00+02:00\": 492500,\n            \"2025-05-15T08:40:00+02:00\": 520100,\n            \"2025-05-15T08:45:00+02:00\": 548600,\n            \"2025-05-15T08:50:00+02:00\": 577600,\n            \"2025-05-15T08:55:00+02:00\": 607500,\n            \"2025-05-15T09:00:00+02:00\": 638000,\n            \"2025-05-15T09:05:00+02:00\": 669200,\n            \"2025-05-15T09:10:00+02:00\": 701400,\n            \"2025-05-15T09:15:00+02:00\": 734200,\n            \"2025-05-15T09:20:00+02:00\": 767500,\n            \"2025-05-15T09:25:00+02:00\": 801700,\n            \"2025-05-15T09:30:00+02:00\": 836500,\n            \"2025-05-15T09:35:00+02:00\": 872100,\n            \"2025-05-15T09:40:00+02:00\": 908000,\n            \"2025-05-15T09:45:00+02:00\": 944600,\n            \"2025-05-15T09:50:00+02:00\": 981700,\n            \"2025-05-15T09:55:00+02:00\": 1019600,\n            \"2025-05-15T10:00:00+02:00\": 1057700,\n            \"2025-05-15T10:05:00+02:00\": 1096700,\n            \"2025-05-15T10:10:00+02:00\": 1136300,\n            \"2025-05-15T10:15:00+02:00\": 1176200,\n            \"2025-05-15T10:20:00+02:00\": 1216900,\n            \"2025-05-15T10:25:00+02:00\": 1258000,\n            \"2025-05-15T10:30:00+02:00\": 1299300,\n            \"2025-05-15T10:35:00+02:00\": 1341200,\n            \"2025-05-15T10:40:00+02:00\": 1383200,\n            \"2025-05-15T10:45:00+02:00\": 1425700,\n            \"2025-05-15T10:50:00+02:00\": null,\n            \"2025-05-15T10:55:00+02:00\": null,\n            \"2025-05-15T11:00:00+02:00\": null,\n            \"2025-05-15T11:05:00+02:00\": null,\n            \"2025-05-15T11:10:00+02:00\": null,\n            \"2025-05-15T11:15:00+02:00\": null,\n            \"2025-05-15T11:20:00+02:00\": null,\n            \"2025-05-15T11:25:00+02:00\": null,\n            \"2025-05-15T11:30:00+02:00\": null,\n            \"2025-05-15T11:35:00+02:00\": null,\n            \"2025-05-15T11:40:00+02:00\": null,\n            \"2025-05-15T11:45:00+02:00\": null,\n            \"2025-05-15T11:50:00+02:00\": null,\n            \"2025-05-15T11:55:00+02:00\": null,\n            \"2025-05-15T12:00:00+02:00\": null,\n            \"2025-05-15T12:05:00+02:00\": null,\n            \"2025-05-15T12:10:00+02:00\": null,\n            \"2025-05-15T12:15:00+02:00\": null,\n            \"2025-05-15T12:20:00+02:00\": null,\n            \"2025-05-15T12:25:00+02:00\": null,\n            \"2025-05-15T12:30:00+02:00\": null,\n            \"2025-05-15T12:35:00+02:00\": null,\n            \"2025-05-15T12:40:00+02:00\": null,\n            \"2025-05-15T12:45:00+02:00\": null,\n            \"2025-05-15T12:50:00+02:00\": null,\n            \"2025-05-15T12:55:00+02:00\": null,\n            \"2025-05-15T13:00:00+02:00\": null,\n            \"2025-05-15T13:05:00+02:00\": null,\n            \"2025-05-15T13:10:00+02:00\": null,\n            \"2025-05-15T13:15:00+02:00\": null,\n            \"2025-05-15T13:20:00+02:00\": null,\n            \"2025-05-15T13:25:00+02:00\": null,\n            \"2025-05-15T13:30:00+02:00\": null,\n            \"2025-05-15T13:35:00+02:00\": null,\n            \"2025-05-15T13:40:00+02:00\": null,\n            \"2025-05-15T13:45:00+02:00\": null,\n            \"2025-05-15T13:50:00+02:00\": null,\n            \"2025-05-15T13:55:00+02:00\": null,\n            \"2025-05-15T14:00:00+02:00\": null,\n            \"2025-05-15T14:05:00+02:00\": null,\n            \"2025-05-15T14:10:00+02:00\": null,\n            \"2025-05-15T14:15:00+02:00\": null,\n            \"2025-05-15T14:20:00+02:00\": null,\n            \"2025-05-15T14:25:00+02:00\": null,\n            \"2025-05-15T14:30:00+02:00\": null,\n            \"2025-05-15T14:35:00+02:00\": null,\n            \"2025-05-15T14:40:00+02:00\": null,\n            \"2025-05-15T14:45:00+02:00\": null,\n            \"2025-05-15T14:50:00+02:00\": null,\n            \"2025-05-15T14:55:00+02:00\": null,\n            \"2025-05-15T15:00:00+02:00\": null,\n            \"2025-05-15T15:05:00+02:00\": null,\n            \"2025-05-15T15:10:00+02:00\": null,\n            \"2025-05-15T15:15:00+02:00\": null,\n            \"2025-05-15T15:20:00+02:00\": null,\n            \"2025-05-15T15:25:00+02:00\": null,\n            \"2025-05-15T15:30:00+02:00\": null,\n            \"2025-05-15T15:35:00+02:00\": null,\n            \"2025-05-15T15:40:00+02:00\": null,\n            \"2025-05-15T15:45:00+02:00\": null,\n            \"2025-05-15T15:50:00+02:00\": null,\n            \"2025-05-15T15:55:00+02:00\": null,\n            \"2025-05-15T16:00:00+02:00\": null,\n            \"2025-05-15T16:05:00+02:00\": null,\n            \"2025-05-15T16:10:00+02:00\": null,\n            \"2025-05-15T16:15:00+02:00\": null,\n            \"2025-05-15T16:20:00+02:00\": null,\n            \"2025-05-15T16:25:00+02:00\": null,\n            \"2025-05-15T16:30:00+02:00\": null,\n            \"2025-05-15T16:35:00+02:00\": null,\n            \"2025-05-15T16:40:00+02:00\": null,\n            \"2025-05-15T16:45:00+02:00\": null,\n            \"2025-05-15T16:50:00+02:00\": null,\n            \"2025-05-15T16:55:00+02:00\": null,\n            \"2025-05-15T17:00:00+02:00\": null,\n            \"2025-05-15T17:05:00+02:00\": null,\n            \"2025-05-15T17:10:00+02:00\": null,\n            \"2025-05-15T17:15:00+02:00\": null,\n            \"2025-05-15T17:20:00+02:00\": null,\n            \"2025-05-15T17:25:00+02:00\": null,\n            \"2025-05-15T17:30:00+02:00\": null,\n            \"2025-05-15T17:35:00+02:00\": null,\n            \"2025-05-15T17:40:00+02:00\": null,\n            \"2025-05-15T17:45:00+02:00\": null,\n            \"2025-05-15T17:50:00+02:00\": null,\n            \"2025-05-15T17:55:00+02:00\": null,\n            \"2025-05-15T18:00:00+02:00\": null,\n            \"2025-05-15T18:05:00+02:00\": null,\n            \"2025-05-15T18:10:00+02:00\": null,\n            \"2025-05-15T18:15:00+02:00\": null,\n            \"2025-05-15T18:20:00+02:00\": null,\n            \"2025-05-15T18:25:00+02:00\": null,\n            \"2025-05-15T18:30:00+02:00\": null,\n            \"2025-05-15T18:35:00+02:00\": null,\n            \"2025-05-15T18:40:00+02:00\": null,\n            \"2025-05-15T18:45:00+02:00\": null,\n            \"2025-05-15T18:50:00+02:00\": null,\n            \"2025-05-15T18:55:00+02:00\": null,\n            \"2025-05-15T19:00:00+02:00\": null,\n            \"2025-05-15T19:05:00+02:00\": null,\n            \"2025-05-15T19:10:00+02:00\": null,\n            \"2025-05-15T19:15:00+02:00\": null,\n            \"2025-05-15T19:20:00+02:00\": null,\n            \"2025-05-15T19:25:00+02:00\": null,\n            \"2025-05-15T19:30:00+02:00\": null,\n            \"2025-05-15T19:35:00+02:00\": null,\n            \"2025-05-15T19:40:00+02:00\": null,\n            \"2025-05-15T19:45:00+02:00\": null,\n            \"2025-05-15T19:50:00+02:00\": null,\n            \"2025-05-15T19:55:00+02:00\": null,\n            \"2025-05-15T20:00:00+02:00\": null,\n            \"2025-05-15T20:05:00+02:00\": null,\n            \"2025-05-15T20:10:00+02:00\": null,\n            \"2025-05-15T20:15:00+02:00\": null,\n            \"2025-05-15T20:20:00+02:00\": null,\n            \"2025-05-15T20:25:00+02:00\": null,\n            \"2025-05-15T20:30:00+02:00\": null,\n            \"2025-05-15T20:35:00+02:00\": null,\n            \"2025-05-15T20:40:00+02:00\": null,\n            \"2025-05-15T20:45:00+02:00\": null,\n            \"2025-05-15T20:50:00+02:00\": null,\n            \"2025-05-15T20:55:00+02:00\": null,\n            \"2025-05-15T21:00:00+02:00\": null,\n            \"2025-05-15T21:05:00+02:00\": null,\n            \"2025-05-15T21:10:00+02:00\": null,\n            \"2025-05-15T21:15:00+02:00\": null,\n            \"2025-05-15T21:20:00+02:00\": null,\n            \"2025-05-15T21:25:00+02:00\": null,\n            \"2025-05-15T21:30:00+02:00\": null,\n            \"2025-05-15T21:35:00+02:00\": null,\n            \"2025-05-15T21:40:00+02:00\": null,\n            \"2025-05-15T21:45:00+02:00\": null,\n            \"2025-05-15T21:50:00+02:00\": null,\n            \"2025-05-15T21:55:00+02:00\": null,\n            \"2025-05-15T22:00:00+02:00\": null,\n            \"2025-05-15T22:05:00+02:00\": null,\n            \"2025-05-15T22:10:00+02:00\": null,\n            \"2025-05-15T22:15:00+02:00\": null,\n            \"2025-05-15T22:20:00+02:00\": null,\n            \"2025-05-15T22:25:00+02:00\": null,\n            \"2025-05-15T22:30:00+02:00\": null,\n            \"2025-05-15T22:35:00+02:00\": null,\n            \"2025-05-15T22:40:00+02:00\": null,\n            \"2025-05-15T22:45:00+02:00\": null,\n            \"2025-05-15T22:50:00+02:00\": null,\n            \"2025-05-15T22:55:00+02:00\": null,\n            \"2025-05-15T23:00:00+02:00\": null,\n            \"2025-05-15T23:05:00+02:00\": null,\n            \"2025-05-15T23:10:00+02:00\": null,\n            \"2025-05-15T23:15:00+02:00\": null,\n            \"2025-05-15T23:20:00+02:00\": null,\n            \"2025-05-15T23:25:00+02:00\": null,\n            \"2025-05-15T23:30:00+02:00\": null,\n            \"2025-05-15T23:35:00+02:00\": null,\n            \"2025-05-15T23:40:00+02:00\": null,\n            \"2025-05-15T23:45:00+02:00\": null,\n            \"2025-05-15T23:50:00+02:00\": null,\n            \"2025-05-15T23:55:00+02:00\": null\n        },\n        \"date\": \"2025-05-15\",\n        \"unit\": \"Wh\"\n    }\n]"
+						},
+						{
+							"name": "Produced Energy today Wh Copy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/channels?channelNames[]=ProdEtotal&dateFrom=yesterday&dateTo=yesterday",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"{{portal}}",
+										"visualization",
+										"plant",
+										"{{plant}}",
+										"channels"
+									],
+									"query": [
+										{
+											"key": "channelNames[]",
+											"value": "ProdEtotal"
+										},
+										{
+											"key": "dateFrom",
+											"value": "yesterday"
+										},
+										{
+											"key": "dateTo",
+											"value": "yesterday"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "1684"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 26 May 2025 06:45:23 GMT"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Vary",
+									"value": "origin,access-control-request-method,access-control-request-headers,accept-encoding"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31536000 ; includeSubDomains"
+								},
+								{
+									"key": "Request-Context",
+									"value": "appId=cid-v1:bb556190-f475-4c7f-b814-212cd7083773"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"6832441406d8e23e11b97419\",\n        \"deviceId\": \"89b711c2-f9b4-11ef-becb-0ddc5cd73f17\",\n        \"deviceType\": \"Datasource\",\n        \"name\": \"ProdEtotal\",\n        \"dataPoints\": {\n            \"2025-05-25T00:00:00+02:00\": 0,\n            \"2025-05-25T00:05:00+02:00\": 0,\n            \"2025-05-25T00:10:00+02:00\": 0,\n            \"2025-05-25T00:15:00+02:00\": 0,\n            \"2025-05-25T00:20:00+02:00\": 0,\n            \"2025-05-25T00:25:00+02:00\": 0,\n            \"2025-05-25T00:30:00+02:00\": 0,\n            \"2025-05-25T00:35:00+02:00\": 0,\n            \"2025-05-25T00:40:00+02:00\": 0,\n            \"2025-05-25T00:45:00+02:00\": 0,\n            \"2025-05-25T00:50:00+02:00\": 0,\n            \"2025-05-25T00:55:00+02:00\": 0,\n            \"2025-05-25T01:00:00+02:00\": 0,\n            \"2025-05-25T01:05:00+02:00\": 0,\n            \"2025-05-25T01:10:00+02:00\": 0,\n            \"2025-05-25T01:15:00+02:00\": 0,\n            \"2025-05-25T01:20:00+02:00\": 0,\n            \"2025-05-25T01:25:00+02:00\": 0,\n            \"2025-05-25T01:30:00+02:00\": 0,\n            \"2025-05-25T01:35:00+02:00\": 0,\n            \"2025-05-25T01:40:00+02:00\": 0,\n            \"2025-05-25T01:45:00+02:00\": 0,\n            \"2025-05-25T01:50:00+02:00\": 0,\n            \"2025-05-25T01:55:00+02:00\": 0,\n            \"2025-05-25T02:00:00+02:00\": 0,\n            \"2025-05-25T02:05:00+02:00\": 0,\n            \"2025-05-25T02:10:00+02:00\": 0,\n            \"2025-05-25T02:15:00+02:00\": 0,\n            \"2025-05-25T02:20:00+02:00\": 0,\n            \"2025-05-25T02:25:00+02:00\": 0,\n            \"2025-05-25T02:30:00+02:00\": 0,\n            \"2025-05-25T02:35:00+02:00\": 0,\n            \"2025-05-25T02:40:00+02:00\": 0,\n            \"2025-05-25T02:45:00+02:00\": 0,\n            \"2025-05-25T02:50:00+02:00\": 0,\n            \"2025-05-25T02:55:00+02:00\": 0,\n            \"2025-05-25T03:00:00+02:00\": 0,\n            \"2025-05-25T03:05:00+02:00\": 0,\n            \"2025-05-25T03:10:00+02:00\": 0,\n            \"2025-05-25T03:15:00+02:00\": 0,\n            \"2025-05-25T03:20:00+02:00\": 0,\n            \"2025-05-25T03:25:00+02:00\": 0,\n            \"2025-05-25T03:30:00+02:00\": 0,\n            \"2025-05-25T03:35:00+02:00\": 0,\n            \"2025-05-25T03:40:00+02:00\": 0,\n            \"2025-05-25T03:45:00+02:00\": 0,\n            \"2025-05-25T03:50:00+02:00\": 0,\n            \"2025-05-25T03:55:00+02:00\": 0,\n            \"2025-05-25T04:00:00+02:00\": 0,\n            \"2025-05-25T04:05:00+02:00\": 0,\n            \"2025-05-25T04:10:00+02:00\": 0,\n            \"2025-05-25T04:15:00+02:00\": 0,\n            \"2025-05-25T04:20:00+02:00\": 0,\n            \"2025-05-25T04:25:00+02:00\": 0,\n            \"2025-05-25T04:30:00+02:00\": 0,\n            \"2025-05-25T04:35:00+02:00\": 0,\n            \"2025-05-25T04:40:00+02:00\": 0,\n            \"2025-05-25T04:45:00+02:00\": 0,\n            \"2025-05-25T04:50:00+02:00\": 0,\n            \"2025-05-25T04:55:00+02:00\": 0,\n            \"2025-05-25T05:00:00+02:00\": 0,\n            \"2025-05-25T05:05:00+02:00\": 0,\n            \"2025-05-25T05:10:00+02:00\": 0,\n            \"2025-05-25T05:15:00+02:00\": 0,\n            \"2025-05-25T05:20:00+02:00\": 0,\n            \"2025-05-25T05:25:00+02:00\": 0,\n            \"2025-05-25T05:30:00+02:00\": 0,\n            \"2025-05-25T05:35:00+02:00\": 0,\n            \"2025-05-25T05:40:00+02:00\": 0,\n            \"2025-05-25T05:45:00+02:00\": 10,\n            \"2025-05-25T05:50:00+02:00\": 334,\n            \"2025-05-25T05:55:00+02:00\": 570,\n            \"2025-05-25T06:00:00+02:00\": 1002,\n            \"2025-05-25T06:05:00+02:00\": 1147,\n            \"2025-05-25T06:10:00+02:00\": 1608,\n            \"2025-05-25T06:15:00+02:00\": 2269,\n            \"2025-05-25T06:20:00+02:00\": 2634,\n            \"2025-05-25T06:25:00+02:00\": 3098,\n            \"2025-05-25T06:30:00+02:00\": 3671,\n            \"2025-05-25T06:35:00+02:00\": 4236,\n            \"2025-05-25T06:40:00+02:00\": 4494,\n            \"2025-05-25T06:45:00+02:00\": 5149,\n            \"2025-05-25T06:50:00+02:00\": 5299,\n            \"2025-05-25T06:55:00+02:00\": 5958,\n            \"2025-05-25T07:00:00+02:00\": 6537,\n            \"2025-05-25T07:05:00+02:00\": 7228,\n            \"2025-05-25T07:10:00+02:00\": 8037,\n            \"2025-05-25T07:15:00+02:00\": 8948,\n            \"2025-05-25T07:20:00+02:00\": 9857,\n            \"2025-05-25T07:25:00+02:00\": 10563,\n            \"2025-05-25T07:30:00+02:00\": 11677,\n            \"2025-05-25T07:35:00+02:00\": 12495,\n            \"2025-05-25T07:40:00+02:00\": 13406,\n            \"2025-05-25T07:45:00+02:00\": 14322,\n            \"2025-05-25T07:50:00+02:00\": 15569,\n            \"2025-05-25T07:55:00+02:00\": 16827,\n            \"2025-05-25T08:00:00+02:00\": 18190,\n            \"2025-05-25T08:05:00+02:00\": 19352,\n            \"2025-05-25T08:10:00+02:00\": 20719,\n            \"2025-05-25T08:15:00+02:00\": 22194,\n            \"2025-05-25T08:20:00+02:00\": 23572,\n            \"2025-05-25T08:25:00+02:00\": 25053,\n            \"2025-05-25T08:30:00+02:00\": 26331,\n            \"2025-05-25T08:35:00+02:00\": 27808,\n            \"2025-05-25T08:40:00+02:00\": 29282,\n            \"2025-05-25T08:45:00+02:00\": 30778,\n            \"2025-05-25T08:50:00+02:00\": 32702,\n            \"2025-05-25T08:55:00+02:00\": 34553,\n            \"2025-05-25T09:00:00+02:00\": 36840,\n            \"2025-05-25T09:05:00+02:00\": 39472,\n            \"2025-05-25T09:10:00+02:00\": 42439,\n            \"2025-05-25T09:15:00+02:00\": 44947,\n            \"2025-05-25T09:20:00+02:00\": 47117,\n            \"2025-05-25T09:25:00+02:00\": 50178,\n            \"2025-05-25T09:30:00+02:00\": 53277,\n            \"2025-05-25T09:35:00+02:00\": 56349,\n            \"2025-05-25T09:40:00+02:00\": 59107,\n            \"2025-05-25T09:45:00+02:00\": 62191,\n            \"2025-05-25T09:50:00+02:00\": 65251,\n            \"2025-05-25T09:55:00+02:00\": 67992,\n            \"2025-05-25T10:00:00+02:00\": 70745,\n            \"2025-05-25T10:05:00+02:00\": 74149,\n            \"2025-05-25T10:10:00+02:00\": 77921,\n            \"2025-05-25T10:15:00+02:00\": 82021,\n            \"2025-05-25T10:20:00+02:00\": 85904,\n            \"2025-05-25T10:25:00+02:00\": 89662,\n            \"2025-05-25T10:30:00+02:00\": 93297,\n            \"2025-05-25T10:35:00+02:00\": 96738,\n            \"2025-05-25T10:40:00+02:00\": 100617,\n            \"2025-05-25T10:45:00+02:00\": 103825,\n            \"2025-05-25T10:50:00+02:00\": 106876,\n            \"2025-05-25T10:55:00+02:00\": 109612,\n            \"2025-05-25T11:00:00+02:00\": 113246,\n            \"2025-05-25T11:05:00+02:00\": 117019,\n            \"2025-05-25T11:10:00+02:00\": 120682,\n            \"2025-05-25T11:15:00+02:00\": 124205,\n            \"2025-05-25T11:20:00+02:00\": 127629,\n            \"2025-05-25T11:25:00+02:00\": 130961,\n            \"2025-05-25T11:30:00+02:00\": 134259,\n            \"2025-05-25T11:35:00+02:00\": 137903,\n            \"2025-05-25T11:40:00+02:00\": 142108,\n            \"2025-05-25T11:45:00+02:00\": 147129,\n            \"2025-05-25T11:50:00+02:00\": 152142,\n            \"2025-05-25T11:55:00+02:00\": 158053,\n            \"2025-05-25T12:00:00+02:00\": 162734,\n            \"2025-05-25T12:05:00+02:00\": 167181,\n            \"2025-05-25T12:10:00+02:00\": 171175,\n            \"2025-05-25T12:15:00+02:00\": 174798,\n            \"2025-05-25T12:20:00+02:00\": 177305,\n            \"2025-05-25T12:25:00+02:00\": 179599,\n            \"2025-05-25T12:30:00+02:00\": 182665,\n            \"2025-05-25T12:35:00+02:00\": 186088,\n            \"2025-05-25T12:40:00+02:00\": 189419,\n            \"2025-05-25T12:45:00+02:00\": 192942,\n            \"2025-05-25T12:50:00+02:00\": 196462,\n            \"2025-05-25T12:55:00+02:00\": 200441,\n            \"2025-05-25T13:00:00+02:00\": 204113,\n            \"2025-05-25T13:05:00+02:00\": 207412,\n            \"2025-05-25T13:10:00+02:00\": 210165,\n            \"2025-05-25T13:15:00+02:00\": 213353,\n            \"2025-05-25T13:20:00+02:00\": 216195,\n            \"2025-05-25T13:25:00+02:00\": 218939,\n            \"2025-05-25T13:30:00+02:00\": 222606,\n            \"2025-05-25T13:35:00+02:00\": 227119,\n            \"2025-05-25T13:40:00+02:00\": 231924,\n            \"2025-05-25T13:45:00+02:00\": 236357,\n            \"2025-05-25T13:50:00+02:00\": 240250,\n            \"2025-05-25T13:55:00+02:00\": 244020,\n            \"2025-05-25T14:00:00+02:00\": 247330,\n            \"2025-05-25T14:05:00+02:00\": 250944,\n            \"2025-05-25T14:10:00+02:00\": 254277,\n            \"2025-05-25T14:15:00+02:00\": 258027,\n            \"2025-05-25T14:20:00+02:00\": 261699,\n            \"2025-05-25T14:25:00+02:00\": 265412,\n            \"2025-05-25T14:30:00+02:00\": 269307,\n            \"2025-05-25T14:35:00+02:00\": 273318,\n            \"2025-05-25T14:40:00+02:00\": 277640,\n            \"2025-05-25T14:45:00+02:00\": 281398,\n            \"2025-05-25T14:50:00+02:00\": 284722,\n            \"2025-05-25T14:55:00+02:00\": 287760,\n            \"2025-05-25T15:00:00+02:00\": 289936,\n            \"2025-05-25T15:05:00+02:00\": 292343,\n            \"2025-05-25T15:10:00+02:00\": 295897,\n            \"2025-05-25T15:15:00+02:00\": 299894,\n            \"2025-05-25T15:20:00+02:00\": 304201,\n            \"2025-05-25T15:25:00+02:00\": 307843,\n            \"2025-05-25T15:30:00+02:00\": 312402,\n            \"2025-05-25T15:35:00+02:00\": 317292,\n            \"2025-05-25T15:40:00+02:00\": 321287,\n            \"2025-05-25T15:45:00+02:00\": 325180,\n            \"2025-05-25T15:50:00+02:00\": 329403,\n            \"2025-05-25T15:55:00+02:00\": 333852,\n            \"2025-05-25T16:00:00+02:00\": 338061,\n            \"2025-05-25T16:05:00+02:00\": 342625,\n            \"2025-05-25T16:10:00+02:00\": 346763,\n            \"2025-05-25T16:15:00+02:00\": 350530,\n            \"2025-05-25T16:20:00+02:00\": 353828,\n            \"2025-05-25T16:25:00+02:00\": 357388,\n            \"2025-05-25T16:30:00+02:00\": 361391,\n            \"2025-05-25T16:35:00+02:00\": 365281,\n            \"2025-05-25T16:40:00+02:00\": 369024,\n            \"2025-05-25T16:45:00+02:00\": 371799,\n            \"2025-05-25T16:50:00+02:00\": 374990,\n            \"2025-05-25T16:55:00+02:00\": 378296,\n            \"2025-05-25T17:00:00+02:00\": 381842,\n            \"2025-05-25T17:05:00+02:00\": 385258,\n            \"2025-05-25T17:10:00+02:00\": 388322,\n            \"2025-05-25T17:15:00+02:00\": 390628,\n            \"2025-05-25T17:20:00+02:00\": 393264,\n            \"2025-05-25T17:25:00+02:00\": 396344,\n            \"2025-05-25T17:30:00+02:00\": 399536,\n            \"2025-05-25T17:35:00+02:00\": 402434,\n            \"2025-05-25T17:40:00+02:00\": 405962,\n            \"2025-05-25T17:45:00+02:00\": 410175,\n            \"2025-05-25T17:50:00+02:00\": 413625,\n            \"2025-05-25T17:55:00+02:00\": 416471,\n            \"2025-05-25T18:00:00+02:00\": 418885,\n            \"2025-05-25T18:05:00+02:00\": 422072,\n            \"2025-05-25T18:10:00+02:00\": 424703,\n            \"2025-05-25T18:15:00+02:00\": 426861,\n            \"2025-05-25T18:20:00+02:00\": 429707,\n            \"2025-05-25T18:25:00+02:00\": 432480,\n            \"2025-05-25T18:30:00+02:00\": 435436,\n            \"2025-05-25T18:35:00+02:00\": 437634,\n            \"2025-05-25T18:40:00+02:00\": 439900,\n            \"2025-05-25T18:45:00+02:00\": 442180,\n            \"2025-05-25T18:50:00+02:00\": 444680,\n            \"2025-05-25T18:55:00+02:00\": 446992,\n            \"2025-05-25T19:00:00+02:00\": 449524,\n            \"2025-05-25T19:05:00+02:00\": 453355,\n            \"2025-05-25T19:10:00+02:00\": 458060,\n            \"2025-05-25T19:15:00+02:00\": 465270,\n            \"2025-05-25T19:20:00+02:00\": 473239,\n            \"2025-05-25T19:25:00+02:00\": 479665,\n            \"2025-05-25T19:30:00+02:00\": 484891,\n            \"2025-05-25T19:35:00+02:00\": 487754,\n            \"2025-05-25T19:40:00+02:00\": 490368,\n            \"2025-05-25T19:45:00+02:00\": 491876,\n            \"2025-05-25T19:50:00+02:00\": 493026,\n            \"2025-05-25T19:55:00+02:00\": 494380,\n            \"2025-05-25T20:00:00+02:00\": 496546,\n            \"2025-05-25T20:05:00+02:00\": 499515,\n            \"2025-05-25T20:10:00+02:00\": 501460,\n            \"2025-05-25T20:15:00+02:00\": 502496,\n            \"2025-05-25T20:20:00+02:00\": 503189,\n            \"2025-05-25T20:25:00+02:00\": 504098,\n            \"2025-05-25T20:30:00+02:00\": 504797,\n            \"2025-05-25T20:35:00+02:00\": 506125,\n            \"2025-05-25T20:40:00+02:00\": 506929,\n            \"2025-05-25T20:45:00+02:00\": 507627,\n            \"2025-05-25T20:50:00+02:00\": 507893,\n            \"2025-05-25T20:55:00+02:00\": 508574,\n            \"2025-05-25T21:00:00+02:00\": 509360,\n            \"2025-05-25T21:05:00+02:00\": 510177,\n            \"2025-05-25T21:10:00+02:00\": 510968,\n            \"2025-05-25T21:15:00+02:00\": 511754,\n            \"2025-05-25T21:20:00+02:00\": 512219,\n            \"2025-05-25T21:25:00+02:00\": 512886,\n            \"2025-05-25T21:30:00+02:00\": 513030,\n            \"2025-05-25T21:35:00+02:00\": 513371,\n            \"2025-05-25T21:40:00+02:00\": 513381,\n            \"2025-05-25T21:45:00+02:00\": 513481,\n            \"2025-05-25T21:50:00+02:00\": 513481,\n            \"2025-05-25T21:55:00+02:00\": 513481,\n            \"2025-05-25T22:00:00+02:00\": 513481,\n            \"2025-05-25T22:05:00+02:00\": 513481,\n            \"2025-05-25T22:10:00+02:00\": 513481,\n            \"2025-05-25T22:15:00+02:00\": 513481,\n            \"2025-05-25T22:20:00+02:00\": 513481,\n            \"2025-05-25T22:25:00+02:00\": 513481,\n            \"2025-05-25T22:30:00+02:00\": 513481,\n            \"2025-05-25T22:35:00+02:00\": 513481,\n            \"2025-05-25T22:40:00+02:00\": 513481,\n            \"2025-05-25T22:45:00+02:00\": 513481,\n            \"2025-05-25T22:50:00+02:00\": 513581,\n            \"2025-05-25T22:55:00+02:00\": 513581,\n            \"2025-05-25T23:00:00+02:00\": 513581,\n            \"2025-05-25T23:05:00+02:00\": 513581,\n            \"2025-05-25T23:10:00+02:00\": 513581,\n            \"2025-05-25T23:15:00+02:00\": 513581,\n            \"2025-05-25T23:20:00+02:00\": 513581,\n            \"2025-05-25T23:25:00+02:00\": 513581,\n            \"2025-05-25T23:30:00+02:00\": 513581,\n            \"2025-05-25T23:35:00+02:00\": 513581,\n            \"2025-05-25T23:40:00+02:00\": 513581,\n            \"2025-05-25T23:45:00+02:00\": 513581,\n            \"2025-05-25T23:50:00+02:00\": 513581,\n            \"2025-05-25T23:55:00+02:00\": 513581\n        },\n        \"date\": \"2025-05-25\",\n        \"unit\": \"Wh\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Produced energy in month (per day)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/year/2023/month/08?channelNames[]=ProdEtotal",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"year",
+								"2023",
+								"month",
+								"08"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produced energy in year (per month)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/year/2023?channelNames[]=ProdEtotal",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"year",
+								"2023"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotal"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Produced energy in lifetime (per year) Wh",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/api/v1/{{portal}}/visualization/plant/{{plant}}/lifetime?channelNames[]=ProdEtotal",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"{{portal}}",
+								"visualization",
+								"plant",
+								"{{plant}}",
+								"lifetime"
+							],
+							"query": [
+								{
+									"key": "channelNames[]",
+									"value": "ProdEtotal"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": ""
+		},
+		{
+			"key": "portal",
+			"value": ""
+		},
+		{
+			"key": "plant",
+			"value": ""
+		},
+		{
+			"key": "bearerToken",
+			"value": ""
+		}
+	]
+}
