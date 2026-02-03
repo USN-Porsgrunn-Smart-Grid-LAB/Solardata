@@ -21,6 +21,7 @@ Make a virtual environment and install pip packages before executing the python 
 virtualenv .venv
 source .venv/bin/activate
 pip install -r scripts/requirements.txt
+cp scripts/.env.example .env # Add secret TOKEN to env. Do not commit .env.
 source .env
 python scripts/download-solarlog.py
 ```
