@@ -1,86 +1,125 @@
 # -*- coding: utf-8 -*-
-from os import getenv, path
+from os import getenv, path, makedirs, path
 from sys import exit
 import json
 import csv
-
 from dotenv import load_dotenv
 import requests as req
+
+from login import login
 
 def main():
     load_dotenv()
 
-    # 0. Read from environment
-    TOKEN = getenv("SOLARLOG_TOKEN")
-    BASE_URL = getenv("SOLARLOG_BASE_URL")
-    PLANT_ID = getenv("SOLARLOG_PLANT_ID")
-    OUT_DIR = "./data/solarlog/"
-    CACHE_DIR = "./.cache/"
-
-    headers = { "Authorization": f"Bearer {TOKEN}"}
-    url = f"{BASE_URL}/visualization/plant/{PLANT_ID}/channels"
-
-    all_days = []
-
-    for year in [2024, 2025, 2026]:
-        for month in ["01","02","03","04","05","06","07","08","09","10","11","12"]:
-            cache_file = f"./{CACHE_DIR}/{year}-{month}.json"
-
-            days = None
-
-            if path.exists(cache_file):
-                # 0. Use cache if file already exist.
-                print(f"{cache_file} cache hit!")
-                with open(cache_file, "r") as file:
-                    days = json.load(file)
-            else:
-                # 1. Setup request
-                query= f"?dateFrom={year}-{month}-01&dateTo={year}-{month}-31&channelNames%5B%5D=ProdPac"
-                print(query)
-                
-                # 2. Do request and handle response
-                res = req.get(url+query, headers=headers)
-                if res.status_code != 200:
-                    print(f"Error: {res.status_code}")
-                    exit(1)
-
-                # 3. Convert to json
-                days = res.json()
+    # 0. Read config from environment
+    CLIENT_ID = getenv("CLIENT_ID")
+    CLIENT_SECRET = getenv("CLIENT_SECRET")
+    TOKEN_URL = getenv("TOKEN_URL")
+    SOLARLOG_SENSOR = getenv("SOLARLOG_SENSOR")
+    OUT_DIR = "./data/solarlog"
 
 
-            # 4. @bugfix: There is a bug in the solarlog API, where when you ask for more days than there are in a month, you get extra days of data from the next month. It overflows to the next month.
-            #    To mitigate this bug, we filter away and days which does not belong to the current month we are looking at.
-            filtered_days = []
-            for day in days:
-                first_timestamp = next(iter(day["dataPoints"].keys()))
-                if f"{year}-{month}" in first_timestamp:
-                    filtered_days.append(day)
-                    all_days.append(day)
-            
-            print(f"Days count: {len(filtered_days)}")
-            
-            # 5. Write to file.
-            with open(cache_file, "w") as out:
-                json_dump = json.dumps(filtered_days, indent=2)
-                out.write(json_dump)
+    # 1. Login
+    res = login(TOKEN_URL, CLIENT_ID, CLIENT_SECRET)
+
+    # 2. Collect data from all the channels
+    data = {}
+
+    channel = get_channel(channel="ProdPac", token=res["access_token"])
+    append_to_data(data, channel)
+
+    channel = get_channel(sensor=SOLARLOG_SENSOR, channel="Irradiation", token=res["access_token"])
+    append_to_data(data, channel)
+
+    channel = get_channel(sensor=SOLARLOG_SENSOR, channel="TempModule", token=res["access_token"])
+    append_to_data(data, channel)
+    
+    channel = get_channel(sensor=SOLARLOG_SENSOR, channel="TempAmbient", token=res["access_token"])
+    append_to_data(data, channel)
+
+    channel = get_channel(sensor=SOLARLOG_SENSOR, channel="WindVelocity", token=res["access_token"])
+    append_to_data(data, channel)
 
 
-    # 6. Convert .json to .csv...
+    # 3. Convert .json to .csv...
     csv_rows = []
-    for day in all_days:
-        for datapoint in day["dataPoints"].items():
-            if datapoint[1] is not None:
-                csv_rows.append(datapoint)
+    for key, values in data.items():
+        csv_rows.append([key, *values])
 
-    csv_rows = sorted(csv_rows, reverse=True)
-    timestamp,_ = csv_rows[0]
+    timestamp, *rest = csv_rows[0]
     datestamp = (timestamp.split(":00+")[0]).replace(":", "_")
-    csv_rows = [["Timestamp", "Production[W]"]] + csv_rows
+    csv_rows = [[
+        "Timestamp", 
+        "Production[W]", 
+        "Irradiation[W/m2]", 
+        "TempModule[°C]", 
+        "TempAmbient[°C]",
+        "WindVelocity[m/s]"
+        ]] + csv_rows
 
-    with open(f"./{OUT_DIR}/solarlog-full-history-{datestamp}.csv", "w") as out:
+    with open(f"{OUT_DIR}/solarlog-full-history-{datestamp}.csv", "w") as out:
         writer = csv.writer(out, delimiter=";")
         writer.writerows(csv_rows)
 
+
+def append_to_data(data, days):
+    for day in days:
+        for timestamp, value in day["dataPoints"].items():
+            if value is not None:
+                if timestamp in data:
+                    data[timestamp].append(value)
+                else:
+                    data[timestamp] = [value]
+
+def get_channel(token: str, channel: str, sensor: str | None = None):
+
+    # 0. Read config from environment
+    BASE_URL = getenv("SOLARLOG_BASE_URL")
+    PLANT_ID = getenv("SOLARLOG_PLANT")
+    DATE_FROM = getenv("DATE_FROM")
+    DATE_TO = getenv("DATE_TO")
+    CACHE_DIR = "./.cache"
+
+    # 2. Setup request
+    QUERY = f"\
+dateFrom={DATE_FROM}&\
+dateTo={DATE_TO}&\
+channelNames[]={channel}"
+
+    if sensor:
+        QUERY += f"&componentIds[]={sensor}"
+
+    URL = f"{BASE_URL}/visualization/plant/{PLANT_ID}/channels?{QUERY}"
+    headers = { "Authorization": f"Bearer {token}"}
+
+    # 3. Setup cache
+    cache_file = f"{CACHE_DIR}/{channel}.json"
+    days = None
+
+    if path.exists(cache_file):
+        # 4a Use cache if already exist
+        print(f"{cache_file} cache hit!")
+        with open(cache_file, "r") as file:
+            days = json.load(file)
+    else:
+        # 4b. Do request if cache does not exist
+        res = req.get(URL, headers=headers)
+        print(res.url)            
+        if res.status_code != 200:
+            print(f"[{channel}] Error: {res.status_code}")
+            print(f"[{channel}] Header", res.headers)
+            print(f"[{channel}] Text", res.text)
+            exit(1)
+
+        days = res.json()
+
+        # 5. Write to file.
+        makedirs(path.dirname(cache_file), exist_ok=True)
+        with open(cache_file, "w") as out:
+            json_dump = json.dumps(days, indent=2)
+            out.write(json_dump)
+
+    return days
 
 if __name__ == "__main__":
     main()
