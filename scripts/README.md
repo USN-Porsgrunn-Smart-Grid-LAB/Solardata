@@ -18,9 +18,14 @@ scripts/
 
 Make a virtual environment and install pip packages before executing the python scripts.
 ```sh
+pip install virtualenv
 virtualenv .venv
+# Linux or Mac ?
 source .venv/bin/activate
-pip install -r scripts/requirements.txt
+# Windows?
+source .venv/Scripts/activate
+
+python -m pip install -r scripts/requirements.txt
 cp scripts/.env.example .env 
 source .env   # Add client-secret to .env.
 python scripts/download-solarlog.py
